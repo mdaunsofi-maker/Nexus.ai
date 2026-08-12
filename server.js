@@ -55,7 +55,7 @@ app.post('/api/verify-otp', (req, res) => {
     }
 });
 
-// AI Chat Route with latest Gemini 3.5 Flash model
+// Fixed AI Chat Route for @google/genai SDK
 app.post('/api/chat', async (req, res) => {
     const { message } = req.body;
     if (!message) {
@@ -65,10 +65,11 @@ app.post('/api/chat', async (req, res) => {
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
-            contents: [message],
+            contents: message,
         });
 
-        const replyText = response.text || "No response generated.";
+        // Safely extract text from the new SDK response structure
+        const replyText = response.text || (response.candidates && response.candidates[0]?.content?.parts[0]?.text) || "No response generated.";
         res.json({ success: true, reply: replyText });
     } catch (error) {
         console.error("Gemini API Error:", error);
