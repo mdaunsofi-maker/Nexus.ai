@@ -64,7 +64,7 @@ app.post('/api/chat', async (req, res) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-3.5-flash', // 👈 Yeh raha naya model jo ab chalega!
+            model: 'gemini-1.5-flash',
             contents: [message],
         });
 
@@ -76,7 +76,7 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 NEXUS Server running on http://localhost:${PORT}`);
+    console.log(`🚀 NEXUS Server running on port ${PORT}`);
 });
